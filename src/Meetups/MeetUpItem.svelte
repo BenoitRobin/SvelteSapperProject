@@ -1,12 +1,17 @@
 <script>
+  import { createEventDispatcher } from "svelte";
   import Button from "./../UI/Button.svelte";
 
+  export let id;
   export let title;
   export let subtitle;
   export let imageUrl;
   export let description;
   export let address;
   export let email;
+  export let isFav;
+
+  const dispatch = createEventDispatcher();
 </script>
 
 <style>
@@ -79,7 +84,11 @@
   </div>
   <footer>
     <Button href="mailto:{email}" caption="Contact us" />
-    <Button type="button" caption="Favorite" mode="outline" />
+    <Button
+      type="button"
+      caption={isFav ? 'Unfavorite' : 'Favorite'}
+      mode="outline"
+      on:click={() => dispatch('togglefavorite', id)} />
     <Button type="button" caption="Show details" />
   </footer>
 </article>

@@ -22,6 +22,7 @@
         "https://www.numerama.com/content/uploads/2016/11/open-data-code.jpg",
       address: "27 Nerd Road, 32523 New York",
       contactEmail: "code@test.com",
+      isFavorite: false,
     },
     {
       id: "m2",
@@ -32,6 +33,7 @@
         "https://res.cloudinary.com/sagacity/image/upload/c_crop,h_731,w_1097,x_0,y_0/c_limit,dpr_auto,f_auto,fl_lossy,q_80,w_1200/Superior_Pools_Residential_Restoration_sby0yt.jpg",
       address: "44, rue Bezout 75014 Paris",
       contactEmail: "swim@test.com",
+      isFavorite: false,
     },
   ];
 
@@ -47,6 +49,16 @@
     };
 
     meetups = [newMeetup, ...meetups];
+  }
+
+  function toggleFavorite(event) {
+    const id = event.detail;
+    const updatedMeetup = { ...meetups.find((m) => m.id === id) };
+    updatedMeetup.isFavorite = !updatedMeetup.isFavorite;
+    const meetupIndex = meetups.findIndex((m) => m.id === id);
+    const updatedMeetups = [...meetups];
+    updatedMeetups[meetupIndex] = updatedMeetup;
+    meetups = updatedMeetups;
   }
 </script>
 
@@ -106,5 +118,5 @@
 
     <Button type="submit" caption="Save" />
   </form>
-  <MeetUpGrid {meetups} />
+  <MeetUpGrid {meetups} on:togglefavorite={toggleFavorite} />
 </main>
