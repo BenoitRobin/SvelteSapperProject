@@ -2106,7 +2106,7 @@ var app = (function () {
     const get_footer_slot_changes = dirty => ({});
     const get_footer_slot_context = ctx => ({});
 
-    // (69:4) <Button on:click={closeModal}>
+    // (69:6) <Button on:click={closeModal}>
     function create_default_slot$1(ctx) {
     	let t;
 
@@ -2126,7 +2126,64 @@ var app = (function () {
     		block,
     		id: create_default_slot$1.name,
     		type: "slot",
-    		source: "(69:4) <Button on:click={closeModal}>",
+    		source: "(69:6) <Button on:click={closeModal}>",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (68:24)        
+    function fallback_block(ctx) {
+    	let button;
+    	let current;
+
+    	button = new Button({
+    			props: {
+    				$$slots: { default: [create_default_slot$1] },
+    				$$scope: { ctx }
+    			},
+    			$$inline: true
+    		});
+
+    	button.$on("click", /*closeModal*/ ctx[1]);
+
+    	const block = {
+    		c: function create() {
+    			create_component(button.$$.fragment);
+    		},
+    		m: function mount(target, anchor) {
+    			mount_component(button, target, anchor);
+    			current = true;
+    		},
+    		p: function update(ctx, dirty) {
+    			const button_changes = {};
+
+    			if (dirty & /*$$scope*/ 8) {
+    				button_changes.$$scope = { dirty, ctx };
+    			}
+
+    			button.$set(button_changes);
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(button.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(button.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			destroy_component(button, detaching);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: fallback_block.name,
+    		type: "fallback",
+    		source: "(68:24)        ",
     		ctx
     	});
 
@@ -2143,8 +2200,6 @@ var app = (function () {
     	let div1;
     	let t3;
     	let footer;
-    	let t4;
-    	let button;
     	let current;
     	let mounted;
     	let dispose;
@@ -2152,16 +2207,7 @@ var app = (function () {
     	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[3], null);
     	const footer_slot_template = /*#slots*/ ctx[2].footer;
     	const footer_slot = create_slot(footer_slot_template, ctx, /*$$scope*/ ctx[3], get_footer_slot_context);
-
-    	button = new Button({
-    			props: {
-    				$$slots: { default: [create_default_slot$1] },
-    				$$scope: { ctx }
-    			},
-    			$$inline: true
-    		});
-
-    	button.$on("click", /*closeModal*/ ctx[1]);
+    	const footer_slot_or_fallback = footer_slot || fallback_block(ctx);
 
     	const block = {
     		c: function create() {
@@ -2175,9 +2221,7 @@ var app = (function () {
     			if (default_slot) default_slot.c();
     			t3 = space();
     			footer = element("footer");
-    			if (footer_slot) footer_slot.c();
-    			t4 = space();
-    			create_component(button.$$.fragment);
+    			if (footer_slot_or_fallback) footer_slot_or_fallback.c();
     			attr_dev(div0, "class", "modal-backdrop svelte-1wfedfe");
     			add_location(div0, file$6, 60, 0, 954);
     			attr_dev(h1, "class", "svelte-1wfedfe");
@@ -2208,12 +2252,10 @@ var app = (function () {
     			append_dev(div2, t3);
     			append_dev(div2, footer);
 
-    			if (footer_slot) {
-    				footer_slot.m(footer, null);
+    			if (footer_slot_or_fallback) {
+    				footer_slot_or_fallback.m(footer, null);
     			}
 
-    			append_dev(footer, t4);
-    			mount_component(button, footer, null);
     			current = true;
 
     			if (!mounted) {
@@ -2235,26 +2277,16 @@ var app = (function () {
     					update_slot(footer_slot, footer_slot_template, ctx, /*$$scope*/ ctx[3], dirty, get_footer_slot_changes, get_footer_slot_context);
     				}
     			}
-
-    			const button_changes = {};
-
-    			if (dirty & /*$$scope*/ 8) {
-    				button_changes.$$scope = { dirty, ctx };
-    			}
-
-    			button.$set(button_changes);
     		},
     		i: function intro(local) {
     			if (current) return;
     			transition_in(default_slot, local);
-    			transition_in(footer_slot, local);
-    			transition_in(button.$$.fragment, local);
+    			transition_in(footer_slot_or_fallback, local);
     			current = true;
     		},
     		o: function outro(local) {
     			transition_out(default_slot, local);
-    			transition_out(footer_slot, local);
-    			transition_out(button.$$.fragment, local);
+    			transition_out(footer_slot_or_fallback, local);
     			current = false;
     		},
     		d: function destroy(detaching) {
@@ -2262,8 +2294,7 @@ var app = (function () {
     			if (detaching) detach_dev(t0);
     			if (detaching) detach_dev(div2);
     			if (default_slot) default_slot.d(detaching);
-    			if (footer_slot) footer_slot.d(detaching);
-    			destroy_component(button);
+    			if (footer_slot_or_fallback) footer_slot_or_fallback.d(detaching);
     			mounted = false;
     			dispose();
     		}
@@ -2352,7 +2383,153 @@ var app = (function () {
     /* src/Meetups/EditMeetup.svelte generated by Svelte v3.29.0 */
     const file$7 = "src/Meetups/EditMeetup.svelte";
 
-    // (34:0) <Modal title="Edit Meetup Data" on:cancel>
+    // (79:4) <Button type="button" mode="outline" on:click={cancel}>
+    function create_default_slot_2$1(ctx) {
+    	let t;
+
+    	const block = {
+    		c: function create() {
+    			t = text("Cancel");
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, t, anchor);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(t);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_default_slot_2$1.name,
+    		type: "slot",
+    		source: "(79:4) <Button type=\\\"button\\\" mode=\\\"outline\\\" on:click={cancel}>",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (80:4) <Button type="button" on:click={submitForm}>
+    function create_default_slot_1$1(ctx) {
+    	let t;
+
+    	const block = {
+    		c: function create() {
+    			t = text("Save");
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, t, anchor);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(t);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_default_slot_1$1.name,
+    		type: "slot",
+    		source: "(80:4) <Button type=\\\"button\\\" on:click={submitForm}>",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (78:2) <div slot="footer">
+    function create_footer_slot(ctx) {
+    	let div;
+    	let button0;
+    	let t;
+    	let button1;
+    	let current;
+
+    	button0 = new Button({
+    			props: {
+    				type: "button",
+    				mode: "outline",
+    				$$slots: { default: [create_default_slot_2$1] },
+    				$$scope: { ctx }
+    			},
+    			$$inline: true
+    		});
+
+    	button0.$on("click", /*cancel*/ ctx[7]);
+
+    	button1 = new Button({
+    			props: {
+    				type: "button",
+    				$$slots: { default: [create_default_slot_1$1] },
+    				$$scope: { ctx }
+    			},
+    			$$inline: true
+    		});
+
+    	button1.$on("click", /*submitForm*/ ctx[6]);
+
+    	const block = {
+    		c: function create() {
+    			div = element("div");
+    			create_component(button0.$$.fragment);
+    			t = space();
+    			create_component(button1.$$.fragment);
+    			attr_dev(div, "slot", "footer");
+    			add_location(div, file$7, 77, 2, 1688);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    			mount_component(button0, div, null);
+    			append_dev(div, t);
+    			mount_component(button1, div, null);
+    			current = true;
+    		},
+    		p: function update(ctx, dirty) {
+    			const button0_changes = {};
+
+    			if (dirty & /*$$scope*/ 65536) {
+    				button0_changes.$$scope = { dirty, ctx };
+    			}
+
+    			button0.$set(button0_changes);
+    			const button1_changes = {};
+
+    			if (dirty & /*$$scope*/ 65536) {
+    				button1_changes.$$scope = { dirty, ctx };
+    			}
+
+    			button1.$set(button1_changes);
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(button0.$$.fragment, local);
+    			transition_in(button1.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(button0.$$.fragment, local);
+    			transition_out(button1.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    			destroy_component(button0);
+    			destroy_component(button1);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_footer_slot.name,
+    		type: "slot",
+    		source: "(78:2) <div slot=\\\"footer\\\">",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (38:0) <Modal title="Edit Meetup Data" on:cancel>
     function create_default_slot$2(ctx) {
     	let form;
     	let textinput0;
@@ -2366,6 +2543,7 @@ var app = (function () {
     	let textinput4;
     	let t4;
     	let textinput5;
+    	let t5;
     	let current;
     	let mounted;
     	let dispose;
@@ -2379,7 +2557,7 @@ var app = (function () {
     			$$inline: true
     		});
 
-    	textinput0.$on("input", /*input_handler*/ ctx[7]);
+    	textinput0.$on("input", /*input_handler*/ ctx[8]);
 
     	textinput1 = new TextInput({
     			props: {
@@ -2390,7 +2568,7 @@ var app = (function () {
     			$$inline: true
     		});
 
-    	textinput1.$on("input", /*input_handler_1*/ ctx[8]);
+    	textinput1.$on("input", /*input_handler_1*/ ctx[9]);
 
     	textinput2 = new TextInput({
     			props: {
@@ -2401,7 +2579,7 @@ var app = (function () {
     			$$inline: true
     		});
 
-    	textinput2.$on("input", /*input_handler_2*/ ctx[9]);
+    	textinput2.$on("input", /*input_handler_2*/ ctx[10]);
 
     	textinput3 = new TextInput({
     			props: {
@@ -2413,7 +2591,7 @@ var app = (function () {
     			$$inline: true
     		});
 
-    	textinput3.$on("input", /*input_handler_3*/ ctx[10]);
+    	textinput3.$on("input", /*input_handler_3*/ ctx[11]);
 
     	textinput4 = new TextInput({
     			props: {
@@ -2424,7 +2602,7 @@ var app = (function () {
     			$$inline: true
     		});
 
-    	textinput4.$on("input", /*input_handler_4*/ ctx[11]);
+    	textinput4.$on("input", /*input_handler_4*/ ctx[12]);
 
     	textinput5 = new TextInput({
     			props: {
@@ -2436,7 +2614,7 @@ var app = (function () {
     			$$inline: true
     		});
 
-    	textinput5.$on("input", /*input_handler_5*/ ctx[12]);
+    	textinput5.$on("input", /*input_handler_5*/ ctx[13]);
 
     	const block = {
     		c: function create() {
@@ -2452,8 +2630,9 @@ var app = (function () {
     			create_component(textinput4.$$.fragment);
     			t4 = space();
     			create_component(textinput5.$$.fragment);
+    			t5 = space();
     			attr_dev(form, "class", "svelte-no1xoc");
-    			add_location(form, file$7, 34, 2, 677);
+    			add_location(form, file$7, 38, 2, 728);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, form, anchor);
@@ -2468,6 +2647,7 @@ var app = (function () {
     			mount_component(textinput4, form, null);
     			append_dev(form, t4);
     			mount_component(textinput5, form, null);
+    			insert_dev(target, t5, anchor);
     			current = true;
 
     			if (!mounted) {
@@ -2522,6 +2702,7 @@ var app = (function () {
     			destroy_component(textinput3);
     			destroy_component(textinput4);
     			destroy_component(textinput5);
+    			if (detaching) detach_dev(t5);
     			mounted = false;
     			dispose();
     		}
@@ -2531,7 +2712,7 @@ var app = (function () {
     		block,
     		id: create_default_slot$2.name,
     		type: "slot",
-    		source: "(34:0) <Modal title=\\\"Edit Meetup Data\\\" on:cancel>",
+    		source: "(38:0) <Modal title=\\\"Edit Meetup Data\\\" on:cancel>",
     		ctx
     	});
 
@@ -2545,13 +2726,16 @@ var app = (function () {
     	modal = new Modal({
     			props: {
     				title: "Edit Meetup Data",
-    				$$slots: { default: [create_default_slot$2] },
+    				$$slots: {
+    					default: [create_default_slot$2],
+    					footer: [create_footer_slot]
+    				},
     				$$scope: { ctx }
     			},
     			$$inline: true
     		});
 
-    	modal.$on("cancel", /*cancel_handler*/ ctx[13]);
+    	modal.$on("cancel", /*cancel_handler*/ ctx[14]);
 
     	const block = {
     		c: function create() {
@@ -2567,7 +2751,7 @@ var app = (function () {
     		p: function update(ctx, [dirty]) {
     			const modal_changes = {};
 
-    			if (dirty & /*$$scope, description, imageUrl, email, address, subtitle, title*/ 32831) {
+    			if (dirty & /*$$scope, description, imageUrl, email, address, subtitle, title*/ 65599) {
     				modal_changes.$$scope = { dirty, ctx };
     			}
 
@@ -2620,6 +2804,10 @@ var app = (function () {
     		});
     	}
 
+    	function cancel() {
+    		dispatch("cancel");
+    	}
+
     	const writable_props = [];
 
     	Object.keys($$props).forEach(key => {
@@ -2649,7 +2837,8 @@ var app = (function () {
     		description,
     		imageUrl,
     		dispatch,
-    		submitForm
+    		submitForm,
+    		cancel
     	});
 
     	$$self.$inject_state = $$props => {
@@ -2673,6 +2862,7 @@ var app = (function () {
     		description,
     		imageUrl,
     		submitForm,
+    		cancel,
     		input_handler,
     		input_handler_1,
     		input_handler_2,

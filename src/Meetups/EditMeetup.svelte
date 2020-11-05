@@ -23,6 +23,10 @@
       imageUrl: imageUrl,
     });
   }
+
+  function cancel() {
+    dispatch("cancel");
+  }
 </script>
 
 <style>
@@ -70,7 +74,9 @@
       value={description}
       controlType="textarea"
       on:input={(event) => (description = event.target.value)} />
-
-    <!-- <Button type="submit">Save</Button> -->
   </form>
+  <div slot="footer">
+    <Button type="button" mode="outline" on:click={cancel}>Cancel</Button>
+    <Button type="button" on:click={submitForm}>Save</Button>
+  </div>
 </Modal>
