@@ -39,6 +39,17 @@ const meetups = writable([
               return [newMeetup, ...items];
           })
       },
+      updateMeetup: (id, meetupData) => {
+        meetups.update(items => {
+          const meetupIndex = items.findIndex(i => i.id === id);
+          const updateMeetup = { ...items[meetupIndex], ...meetupData };
+          const updatedMeetups = [...items];
+          updatedMeetups[meetupIndex] = updateMeetup;
+          return updatedMeetups;
+
+        })
+      },
+
       toggleFavorite: (id) => {
           meetups.update(items => {
             const updatedMeetup = { ...items.find((m) => m.id === id) };
