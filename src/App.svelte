@@ -8,6 +8,7 @@
   import MeetUpItem from "./Meetups/MeetUpItem.svelte";
   import MeetupDetail from "./Meetups/MeetupDetail.svelte";
   import Loading from "./UI/LoadingSpinner.svelte";
+  import Error from "./UI/Error.svelte";
 
   // let meetups =
 
@@ -16,6 +17,7 @@
   let page = "overview";
   let pageData = {};
   let isLoading = true;
+  let error;
 
   fetch("https://meetup-e03f8.firebaseio.com/meetups.json")
     .then((res) => {
@@ -34,10 +36,11 @@
       }
       setTimeout(() => {
         isLoading = false;
-        meetups.setMeetup(loadedMeetups);
+        meetups.setMeetup(loadedMeetups.reverse());
       }, 1000);
     })
     .catch((err) => {
+      error = err;
       isLoading = false;
       console.log(err);
     });
@@ -66,6 +69,10 @@
     editMode = "edit";
     editedId = event.detail;
   }
+
+  function clearError() {
+    error = null;
+  }
 </script>
 
 <style>
@@ -73,6 +80,10 @@
     padding-top: 5rem;
   }
 </style>
+
+{#if error}
+  <Error message={error.message} on:cancel={clearError} />
+{/if}
 
 <Header />
 
